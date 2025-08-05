@@ -10,20 +10,22 @@
 #define GREEN   "\033[32m"
 #define RESET   "\033[0m"
 
-#define N_THREADS 4
-#define QUEUE_SIZE 8
+#define N_THREADS       4
+#define QUEUE_SIZE      8
 #define TEST_TASK_COUNT 16
+
+#define TOTAL_TRY 10
 
 int executed_flags[TEST_TASK_COUNT];
 
-void empty_task(void *arg) {
+void empty_task(void *) {
 
 }
 
-void benchmark_throughput(int threads, int queue_size, int tasks) {
+double benchmark_mesure_speed(int threads, int queue_size, int tasks) {
     threadpool *pool = new_threadpool(threads, queue_size);
     clock_t start = clock();
-
+    
     for (int i = 0; i < tasks; i++)
         submit_task(pool, empty_task, NULL);
 
@@ -31,7 +33,16 @@ void benchmark_throughput(int threads, int queue_size, int tasks) {
     clock_t end = clock();
 
     double duration = (double)(end - start) / CLOCKS_PER_SEC;
-    printf("Benchmark: %d threads, %d queue, %d tasks => %.2fs\n", threads, queue_size, tasks, duration);
+    return duration;
+}
+
+void benchmark_throughput(int threads, int queue_size, int tasks) {
+    double total_duration = 0;
+
+    for (int i = 0; i < TOTAL_TRY; i++)
+        total_duration += benchmark_mesure_speed(threads, queue_size, tasks);
+
+    printf("Benchmark: %d threads, %d queue, %d tasks => %.2fs\n", threads, queue_size, tasks, total_duration / TOTAL_TRY);
 }
 
 void task_mark_execution(void *arg) {

@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 #define NO_SHUTDOWN     0
-#define END_TASKS       2
+#define END_TASKS       1
 
 typedef struct {
     void (*function)(void *);
