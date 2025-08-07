@@ -1,3 +1,6 @@
+#ifndef _C_THREADPOOL_H_
+#define _C_THREADPOOL_H_
+
 #include <pthread.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -119,6 +122,4 @@ threadpool *submit_task(threadpool *pool, void (*function)(void *), void *argume
     return pool;
 }
 
-#ifdef __cplusplus
-}
 #endif
