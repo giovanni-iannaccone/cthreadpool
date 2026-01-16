@@ -14,4 +14,3 @@ test: $(TEST_EXEC)
 
 clean:
 	@rm -rf $(TEST_EXEC)
-	
